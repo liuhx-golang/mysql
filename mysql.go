@@ -10,7 +10,7 @@ import (
 
 var _db = &gorm.DB{}
 
-func Init2(user string, password string, host string, db string, maxOpenConns time.Duration, maxIdleConns int, mxOpenConns int) {
+func Init2(user string, password string, host string, db string, connMaxLifetime int, maxIdleConns int, mxOpenConns int) {
 	link := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, db)
 	_db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN: link, // DSN data source name
@@ -31,7 +31,7 @@ func Init2(user string, password string, host string, db string, maxOpenConns ti
 	sqlDB.SetMaxOpenConns(mxOpenConns)
 
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
-	sqlDB.SetConnMaxLifetime(maxOpenConns * time.Millisecond)
+	sqlDB.SetConnMaxLifetime(connMaxLifetime * time.Millisecond)
 }
 
 func GetDB() *gorm.DB {
