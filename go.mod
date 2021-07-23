@@ -1,4 +1,4 @@
-module mysql
+module github.com/liuhx-golang/mysql 
 
 go 1.13
 
