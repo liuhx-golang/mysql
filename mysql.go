@@ -8,11 +8,11 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-var _db = &gorm.DB{}
+var DB = &gorm.DB{}
 
 func Init2(user string, password string, host string, db string, connMaxLifetime int, maxIdleConns int, mxOpenConns int) {
 	link := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, db)
-	_db, err := gorm.Open(mysql.New(mysql.Config{
+	DB, err := gorm.Open(mysql.New(mysql.Config{
 		DSN: link, // DSN data source name
 	}), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
@@ -20,7 +20,7 @@ func Init2(user string, password string, host string, db string, connMaxLifetime
 	if err != nil {
 		panic("connect mysql error ="+err.Error())
 	}
-	sqlDB, err := _db.DB()
+	sqlDB, err := DB.DB()
 	if err != nil {
 		panic("connect mysql error ="+err.Error())
 	}
@@ -32,8 +32,4 @@ func Init2(user string, password string, host string, db string, connMaxLifetime
 
 	// SetConnMaxLifetime 设置了连接可复用的最大时间。
 	sqlDB.SetConnMaxLifetime(connMaxLifetime * time.Millisecond)
-}
-
-func GetDB() *gorm.DB {
-	return _db
 }
